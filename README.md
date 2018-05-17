@@ -1,5 +1,8 @@
 # shae-cellshape-public
 
+[![DOI](https://zenodo.org/badge/46006823.svg)](https://zenodo.org/badge/latestdoi/46006823)
+
+
 This is a set of MATLAB routines associated with the process of reconstructing 3D shapes of objects from fluorescence microscopy images.
 
 Improvements and enhancements have been made throughout the years, see the following publications:
