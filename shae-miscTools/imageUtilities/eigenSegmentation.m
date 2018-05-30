@@ -8,9 +8,31 @@ if nargin==1
     hessFlag=1;
 end
 
-
 H=hessianMatrix(imageIn,4);
 [Heig,HV]=hessianEig(H);
+
+%% Attempt to utilize eigenSegmentation for phase images BPB
+% filter1 = bpass(imageIn,2,[]);
+% filter2 = bpass(imageIn,[],15);
+% H1=hessianMatrix(filter1,15);
+% [Heig1,HV1]=hessianEig(H1);
+% HVorientation1 = atan2(HV1{1,1},HV1{2,1});
+% 
+% H2=hessianMatrix(filter2,15);
+% [Heig2,HV2]=hessianEig(H2);
+% HVorientation2 = atan2(HV2{1,1},HV2{2,1});
+% % eigenval threshold
+% thresh = 0.0001;
+% HVorientation1((abs(Heig1(:,:,1))<thresh)) = -10;
+% % HVorientation1((Heig1(:,:,1)<thresh)) = -1;
+% HVorientation = (0*HVorientation1+HVorientation1)/1;
+% imshow(HVorientation,[0,pi]);
+% colormap1 = parula(256);
+% colormap1 = cat(1,[0,0,0],colormap1);
+% colormap(colormap1);
+% 
+% figure(gcf);
+%% %%
 Hmax=nanmax(Heig,[],3);
 %Hmax=Hmax./max(Hmax(:));
 

@@ -4,25 +4,35 @@ function [ Heig ,HeigVec ] = hessianEig( H ,Hmask)
 %   Calculates eigenvalues of the hessian matrix H
 
 if nargin==1
-    Hmask=ones(size(H{1,1}));
+    Hmask=true(size(H{1,1}));
+else
+    Hmask=Hmask>0;
 end
 Hsize=size(H{1,1});
 Hind=find(Hmask);
 if numel(Hsize)==3
-    [Hmaskx,Hmasky,Hmaskz]=ind2sub(Hsize,Hind);
+  %  [Hmaskx,Hmasky,Hmaskz]=ind2sub(Hsize,Hind);
     
     Hlin=cellfun(@(x) reshape(x,1,1,[]),H,'UniformOutput',false);
     Hlin=cell2mat(Hlin);
     Heig=zeros(Hsize(1),Hsize(2),Hsize(3),3);
-        [V,D]=eig3D(Hlin(:,:,Hind));
+    [V,D]=eig3D(Hlin(:,:,Hind));
         
-           Heig(:,:,:,1)=reshape(D(1,1,:),Hsize);
-           Heig(:,:,:,2)=reshape(D(1,2,:),Hsize);
-           Heig(:,:,:,3)=reshape(D(1,3,:),Hsize);
+        
+%            Heig(:,:,:,1)=reshape(D(1,1,:),Hsize);
+%            Heig(:,:,:,2)=reshape(D(1,2,:),Hsize);
+%            Heig(:,:,:,3)=reshape(D(1,3,:),Hsize);
 for i=1:3
+    htemp=zeros(Hsize);
+    htemp(Hmask)=D(1,i,:);
+    Heig(:,:,:,i)=htemp;
+    if nargout==2
     for j=1:3
+        
            HeigVec{i,j}=reshape(V(i,j,:),Hsize);
     end
+    end
+    
 end
 
 
@@ -38,17 +48,22 @@ elseif numel(Hsize)==2
     Heig=zeros(Hsize(1),Hsize(2),2);
     
     
-            [V,D]=eig2D(Hlin);
+            [V,D]=eig2D(Hlin(:,:,Hind));
+         
             
-           Heig(:,:,1)=reshape(D(1,1,:),Hsize(1),Hsize(2));
-           Heig(:,:,2)=reshape(D(1,2,:),Hsize(1),Hsize(2));
-           HeigVec{1,1}=reshape(V(1,1,:),Hsize(1),Hsize(2));
-           HeigVec{1,2}=reshape(V(1,2,:),Hsize(1),Hsize(2));
-           HeigVec{2,1}=reshape(V(2,1,:),Hsize(1),Hsize(2));
-           HeigVec{2,2}=reshape(V(2,2,:),Hsize(1),Hsize(2));
-
-
-      
+for i=1:2
+    htemp=zeros(Hsize);
+    htemp(Hmask)=D(1,i,:);
+    Heig(:,:,i)=htemp;
+    if nargout==2
+    for j=1:2
+        
+           HeigVec{i,j}=reshape(V(i,j,:),Hsize);
+    end
+    end
+    
+end
+            
 end
 
 if nargout==2

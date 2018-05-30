@@ -70,6 +70,9 @@ if ~isfield(flag,'profile')
     flag.profile = '0';
 end
 
+if ~isfield(flag,'isStartSphere')
+    flag.isStartSphere = 1;
+end
 % % % ----------- end default params
 %%
 % check ordering of stack

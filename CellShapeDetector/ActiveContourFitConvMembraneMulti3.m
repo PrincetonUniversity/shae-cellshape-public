@@ -163,8 +163,8 @@ for i=1:cline_para.iterations;
             vv=[interp2(Xv(:,:,1),Ccoord,Rcoord,'*spline'),...
                 interp2(Xv(:,:,2),Ccoord,Rcoord,'*spline'),...
                 interp2(Xv(:,:,3),Ccoord,Rcoord,'*spline')];
-            polymer3(iPolymer).uvec=normr(uv);
-            polymer3(iPolymer).vvec=normr(vv);
+            polymer3(iPolymer).uvec=normalizeRows(uv);
+            polymer3(iPolymer).vvec=normalizeRows(vv);
             
             C1=coord2image3d(polymer3(iPolymer).xs,polymer3(iPolymer).ys,...
                 polymer3(iPolymer).zs,size(hyper_stack),1,1);
@@ -267,7 +267,7 @@ for i=1:cline_para.iterations;
             
             fstretch=interp1(0:1,Fends,linspace(0,1,endsIdx(iPolymer)-startIdx(iPolymer)+1));
             [~,tVector]=gradient(xyzs(startIdx(iPolymer):endsIdx(iPolymer),:),3);
-            tVector=normr(tVector);
+            tVector=normalizeRows(tVector);
             fstretch=bsxfun(@times,tVector,fstretch');
             fs(startIdx(iPolymer):endsIdx(iPolymer),:)=fs(startIdx(iPolymer):endsIdx(iPolymer),:)+fstretch;
         end
@@ -329,7 +329,7 @@ for i=1:cline_para.iterations;
             Frot=normalizeRange((startIdx(iPolymer):endsIdx(iPolymer)));
             Frot=Frot-mean(Frot);
             v_perp=rc(iPolymer).coord(1,:)-rc(iPolymer).coord(end,:);
-            v_perp=normr(v_perp);
+            v_perp=normalizeRows(v_perp);
             v_perp=[-v_perp(2),v_perp(1)];
             Frot=Frot'*v_perp*thermal*(rand(1)-.5)*5;
             fs(startIdx(iPolymer):endsIdx(iPolymer),:)=...
@@ -453,7 +453,7 @@ for iPolymer=1:length(rc)
     poly(iPolymer).rc=rc(iPolymer).coord;
     poly(iPolymer).length=calculate_length(xs,ys,zs);
     poly(iPolymer).Curvature=Curvature([xs,ys,zs],5);
-    poly(iPolymer).Twist=Twist([xs,ys,zs],5)';
+    poly(iPolymer).Twist=TwistB([xs,ys,zs],5)';
     poly(iPolymer).AngleAvg=mean(atan2(poly(iPolymer).Twist,poly(iPolymer).Curvature));
     
     xyzs=cat(1,xyzs,[xs,ys,zs]);

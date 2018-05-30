@@ -56,7 +56,7 @@ end
 %neighpos=[x(positionMap2(i,:))',y(positionMap2(i,:))',z(positionMap2(i,:))'];
            pos=[x(i),y(i),z(i)];
            ds=bsxfun(@minus,neighpos,pos);
-           ds=dot(normr(ds),ds,2);
+           ds=dot(normalizeRows(ds),ds,2);
            ds=ds.^-1*4/length(ind);
            ds(isnan(ds)|isinf(ds))=0;
            w=ds./sum(ds);

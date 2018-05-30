@@ -42,6 +42,7 @@ for iiPlane = 1:size(inputImage,3);
     tempPlane = maskedInputImage(:,:,iiPlane);
    pedestal(iiPlane) = nanmedian(tempPlane(:)); 
 end
+pedestal(isnan(pedestal))=0;
 
 % find what order polynomial to fit
 polyOrder = str2double(borderString(2:end));

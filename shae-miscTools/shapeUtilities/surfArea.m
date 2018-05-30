@@ -25,7 +25,7 @@ y=y(:)-mean(y(:));
 z=z(:)-mean(z(:));
 %%
 cmV=[x,y,z];
-cmV=normr(cmV);
+cmV=normalizeRows(cmV);
 if sum(dot(cmV,V1,2))<0
     V=-V;
 end

@@ -6,7 +6,7 @@ function [t_vector,b_vector,n_vector]=tbnVector(xyzs)
 
 t_vector=diff(xyzs);
 
-    t_vector=normr(t_vector);
+    t_vector=normalizeRows(t_vector);
 if size(t_vector,1)>1 && sum(sum(abs(diff(t_vector))))>.0001
 b_vector=cross(t_vector,[[0,0,0]',diff(t_vector)']');
 else 
