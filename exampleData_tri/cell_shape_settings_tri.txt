@@ -45,6 +45,8 @@ end_angles 20
 z_level 0.8
 imageOutlineStack 0
 isStartSphere 1
+% minutes to spend before throwing an error and moving on to the next object
+timeoutLimit 60
 endSection
 
 beginSection cline_para
