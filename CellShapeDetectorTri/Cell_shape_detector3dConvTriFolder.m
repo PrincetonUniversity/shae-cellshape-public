@@ -54,17 +54,22 @@ else
 end
 
 
-%
-if fileGroupSize>1
-    if numel(folderIdx)>1
-        warning('cellShape:invalidParams','Suppressing extra folderIdx''s and using fileGroupSize');
+% Check to see if all files are requested
+if isfinite(fileGroupSize)
+    if fileGroupSize>1
+        if numel(folderIdx)>1
+            warning('cellShape:invalidParams','Suppressing extra folderIdx''s and using fileGroupSize');
+        end
+        folderIdx = folderIdx(1):folderIdx(1)+fileGroupSize-1;
+        
     end
-    folderIdx = folderIdx(1):folderIdx(1)+fileGroupSize-1;
+    
+    
+    disp(['Processing : ',folderName,'. Files : ',num2str(folderIdx),'.']);
+else
+    disp(['Processing : ',folderName,'. All files.']);
     
 end
-
-disp(['Processing : ',folderName,'. Files : ',num2str(folderIdx),'.']);
-
 
 try
     %if tri type settings txt exist, use it, otherwise use whatever is there
@@ -80,6 +85,7 @@ catch ME
 %     disp(pwd)
 %     keyboard
 %    exit(2); 
+return
 end
 
 disp(['Processing params: ',num2str(toc),' seconds.']);
@@ -93,7 +99,13 @@ ptail='TRI.mat';
 fileList = dir([folderName,filesep,'*.tif']);
 
 % remove annoying ._
-fileList=fileList(cellfun(@(x) isempty(strfind(x,'._')),{fileList.name}));
+fileList = fileList(cellfun(@(x) isempty(strfind(x,'._')),{fileList.name}));
+
+% all the files are requested, list the numbers
+if not(isfinite(fileGroupSize(1)))
+    folderIdx = 1:numel(fileList);
+    disp(['Processing : ',folderName,'. Files : ',num2str(folderIdx),'.']);   
+end
 
 switch usageType
     case 1 
@@ -214,6 +226,7 @@ for kkFile = 1:numel(folderIdx);
                 end
                 filterIdx = str2double(filterString(end-1));
                 if isnan(filterIdx)
+                    warning('cellShapeDetector:shapeDetector3dConvTriFolder:noColorShift','No color shift between channels used.');
                     filterIdx = 3; % no shifting of image
                 end
                 
